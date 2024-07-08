@@ -1,0 +1,152 @@
+[
+    {
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "password": "password123",
+        "role": "customer",
+        "addresses": [
+            {
+                "street": "123 Main St",
+                "city": "Springfield",
+                "state": "IL",
+                "postalCode": "62704",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "Jane Smith",
+        "email": "jane.smith@example.com",
+        "password": "password456",
+        "role": "admin",
+        "addresses": [
+            {
+                "street": "456 Elm St",
+                "city": "Shelbyville",
+                "state": "IN",
+                "postalCode": "46176",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "Alice Johnson",
+        "email": "alice.johnson@example.com",
+        "password": "password789",
+        "role": "customer",
+        "addresses": [
+            {
+                "street": "789 Oak St",
+                "city": "Metropolis",
+                "state": "NY",
+                "postalCode": "10001",
+                "country": "USA"
+            }            
+        ]
+    },
+    {
+        "name": "Bob Brown",
+        "email": "bob.brown@example.com",
+        "password": "password012",
+        "role": "customer",
+        "addresses": [
+            {
+                "street": "101 Maple St",
+                "city": "Smallville",
+                "state": "KS",
+                "postalCode": "66002",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "Carol White",
+        "email": "carol.white@example.com",
+        "password": "password345",
+        "role": "admin",
+        "addresses": [
+            {
+                "street": "202 Birch St",
+                "city": "Star City",
+                "state": "CA",
+                "postalCode": "90210",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "David Green",
+        "email": "david.green@example.com",
+        "password": "password678",
+        "role": "customer",
+        "addresses": [
+            {
+                "street": "303 Cedar St",
+                "city": "Central City",
+                "state": "OH",
+                "postalCode": "43210",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "Eve Black",
+        "email": "eve.black@example.com",
+        "password": "password901",
+        "role": "customer",
+        "addresses": [
+            {
+                "street": "404 Walnut St",
+                "city": "Blüdhaven",
+                "state": "DE",
+                "postalCode": "19901",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "Frank Gray",
+        "email": "frank.gray@example.com",
+        "password": "password234",
+        "role": "customer",
+        "addresses": [
+            {
+                "street": "505 Ash St",
+                "city": "Keystone City",
+                "state": "PA",
+                "postalCode": "19001",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "Grace Blue",
+        "email": "grace.blue@example.com",
+        "password": "password567",
+        "role": "customer",
+        "addresses": [
+            {
+                "street": "606 Spruce St",
+                "city": "National City",
+                "state": "VA",
+                "postalCode": "22031",
+                "country": "USA"
+            }
+        ]
+    },
+    {
+        "name": "Henry Gold",
+        "email": "henry.gold@example.com",
+        "password": "password890",
+        "role": "admin",
+        "addresses": [
+            {
+                "street": "707 Fir St",
+                "city": "Opal City",
+                "state": "CO",
+                "postalCode": "80014",
+                "country": "USA"
+            }
+        ]
+    }
+]
