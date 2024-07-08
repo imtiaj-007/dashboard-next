@@ -1,4 +1,5 @@
 'use client'
+import mongoose from "mongoose";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { FiSearch } from "react-icons/fi";
 import { AiFillNotification } from "react-icons/ai";
@@ -8,6 +9,10 @@ import { usePathname } from "next/navigation";
 const Navbar = () => {
     let path = usePathname();
     let pagePath = path.split('/').pop();
+    if(mongoose.Types.ObjectId.isValid(pagePath)) {
+        let pathArr = path.split('/');
+        pagePath = pathArr[pathArr.length - 2]
+    }
 
     return (
         <nav id="navbar" className="grid grid-cols-3 h-14 mt-3 mx-3 px-6 py-2 bg-white rounded-lg">

@@ -13,7 +13,11 @@ const Cards = (props) => {
                 </div>
 
                 <div className="flex justify-between items-center ">
-                    <h6 className={`font-semibold text-2xl ${index !== 0 ? 'text-gray-700' : ''}`} >&#8377; {amount}</h6>
+                    <h6 className={`font-semibold text-2xl ${index !== 0 ? 'text-gray-700' : ''}`} >{amount.toLocaleString('en-IN', {
+                        maximumFractionDigits: 2,
+                        style: 'currency',
+                        currency: 'INR'
+                    })}</h6>
                     <Link href={'/dashboard/orders'} className="flex gap-1">
                         <span className="font-body underline underline-offset-1 ">{quantity} orders</span>
                         <RiArrowRightSLine size={20} color={`${index === 0 ? "white" : "black"}`} />

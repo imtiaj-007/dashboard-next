@@ -97,7 +97,7 @@ const Sidebar = () => {
         <section id="sidebar" className="w-full h-full">
             <div id="head-section" className="w-full flex gap-3 justify-between items-center px-5 pt-5 pb-4 bg-gray-900 ">
                 <div className="flex gap-3 items-center ">
-                    <Image src={'/user.png'} width={44} height={40} className="bg-white p-1 rounded-md" />
+                    <Image src={'/user.png'} width={44} height={40} className="bg-white p-1 rounded-md" alt="icons" />
                     <div className="text-white">
                         <p className="font-medium ">Nishyan</p>
                         <Link href={'/dashboard'} ><p className="font-light text-sm underline underline-offset-1">Visit Store</p></Link>

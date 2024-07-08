@@ -1,28 +1,14 @@
 'use client'
-import { useRef, useState } from "react"
+import axios from "axios"
+import { useRef, useState, useEffect } from "react"
+import exportFromJSON from 'export-from-json'
 import Cards from "@/app/ui/dashboard/Cards"
-import { FiSearch, FiDownload } from "react-icons/fi";
-import { BiSortAlt2 } from "react-icons/bi";
-import Table from "@/app/ui/dashboard/Table";
-import Pagination from "@/app/ui/dashboard/Pagination";
+import Table from "@/app/ui/dashboard/Table"
+import Pagination from "@/app/ui/dashboard/Pagination"
+import { FiSearch, FiDownload } from "react-icons/fi"
 
-const cards = [
-    {
-        heading: 'Next Payout',
-        amount: '2,144.2',
-        quantity: 23,
-    },
-    {
-        heading: 'Amount Pending',
-        amount: '1,254.0',
-        quantity: 8,
-    },
-    {
-        heading: 'Amount Recieved',
-        amount: '8,637.6',
-        quantity: 15,
-    }
-]
+
+const baseURL = 'http://localhost:3000/api/orders'
 
 const PaymentsPage = () => {
     const [month, setMonth] = useState('This Month');
@@ -30,7 +16,26 @@ const PaymentsPage = () => {
     const payoutRef = useRef();
     const refundRef = useRef();
     const [pageNo, setPageNo] = useState(1);
-    const [totalResults, setTotalResults] = useState(43);
+    const [sortValue, setSortvalue] = useState('-createdAt');
+    const [metaData, setMetaData] = useState({});
+    const [tableData, setTableData] = useState([]);
+    const [cardData, setCardData] = useState([]);
+
+
+    const fetchData = async (url) => {
+        try {
+            const res = await axios.get(url, {
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+            setTableData(res.data.orders);
+            setMetaData(res.data.meta);
+            setCardData(res.data.meta.card);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const toggleTableData = () => {
         if (active) {
@@ -49,18 +54,53 @@ const PaymentsPage = () => {
         }
     }
 
-    const goToPrevPage = ()=> {
-        setPageNo(prevPageNo => prevPageNo - 1);
+    const searchByOrderId = async (e)=> {
+        let url = `${baseURL}?orderID=${e.target.value}`
+        fetchData(url);
     }
 
-    const goToNextPage = ()=> {
-        setPageNo(prevPageNo => prevPageNo + 1);
-    }
-
-    const changePage = (e)=> {
+    const sortData = async (e)=> {
         e.preventDefault();
-        setPageNo(Number(e.target.dataset.pageno));
+        setSortvalue(e.target.value);
+        let url = `${baseURL}?page=${pageNo}&sort=${e.target.value}`
+        fetchData(url);
     }
+
+    const downloadTableData = ()=> {
+        const fileName = 'transactions';
+        const exportType =  exportFromJSON.types.csv;
+        exportFromJSON({
+            data: tableData,
+            fileName,       
+            fields: ['_id', 'userID', 'productName', 'qty', 'price', 'orderStatus', 'paymentMethod', 'createdAt'],
+            exportType
+        })
+    }
+
+    const goToPrevPage = () => {
+        setPageNo(prevPageNo => prevPageNo - 1);
+        let url = `${baseURL}?page=${pageNo - 1}&sort=${sortValue}`
+        fetchData(url);
+    }
+
+    const goToNextPage = () => {
+        setPageNo(prevPageNo => prevPageNo + 1);
+        let url = `${baseURL}?page=${pageNo + 1}&sort=${sortValue}`
+        fetchData(url);
+    }
+
+    const changePage = (e) => {
+        e.preventDefault();
+        let page = Number(e.target.dataset.pageno);
+        setPageNo(page);
+
+        let url = `${baseURL}?page=${page}&sort=${sortValue}`
+        fetchData(url);
+    }
+
+    useEffect(() => {
+        fetchData(baseURL);
+    }, [])
 
 
     return (
@@ -77,9 +117,9 @@ const PaymentsPage = () => {
 
             <div id="cards" className="grid grid-cols-3 gap-4 px-8 pb-5">
                 {
-                    cards.map((item, idx) => {
+                    cardData.map((item, idx) => {
                         return (
-                            <Cards key={idx} item={item} index={idx} />
+                            <Cards key={idx} item={item} index={idx} metaData={metaData} />
                         )
                     })
                 }
@@ -96,26 +136,32 @@ const PaymentsPage = () => {
                     <div className="table-header flex justify-between">
                         <div className="w-72 flex justify-center items-center gap-3 bg-white border border-gray-400 px-4 py-1 rounded-lg hover:opacity-80 hover:cursor-pointer ">
                             <FiSearch size={20} />
-                            <input type="text" name="global-search" id="globalSearch" className=" w-full outline-none font-medium text-sm bg-white text-stone-700" placeholder="Search by order ID" />
+                            <input type="text" name="global-search" id="globalSearch" className=" w-full outline-none font-medium text-sm bg-white text-stone-700" placeholder="Search by order ID" onChange={searchByOrderId} />
                         </div>
                         <div className="options flex gap-2">
-                            <button className="outline outline-1 rounded-sm font-medium text-sm flex gap-1 items-center px-2"><span>Sort</span> <BiSortAlt2 size={16} /></button>
-                            <button className="outline outline-1 rounded-sm px-2"><FiDownload size={16} /></button>
+                            
+                            <select id="sort" className="outline outline-1 font-semibold text-sm text-neutral-600 px-2 rounded-sm" onChange={sortData}>
+                                <option value="-createdAt">Date (Latest to Oldest)</option>
+                                <option value="createdAt">Date (Oldest to Latest)</option>
+                                <option value="price">Amount (Low to High)</option>
+                                <option value="-price">Amount (High to Low).</option>
+                            </select>
+                            <button className="outline outline-1 rounded-sm px-2" onClick={downloadTableData}><FiDownload size={16} /></button>
                         </div>
                     </div>
 
                     <div className="table-body">
-                        <Table />
+                        <Table tableData={tableData} pageNo={pageNo} />
                     </div>
 
                     <div className="table-footer flex justify-between items-center text-sm px-8 mt-3">
                         <section className="page-result">
                             <p>
-                                Showing <span className="font-semibold">{10 * pageNo - 9}</span> to <span className="font-semibold">{Math.min(totalResults, 10 * pageNo)}</span> of <span className="font-semibold">{totalResults}</span> results
+                                Showing <span className="font-semibold">{10 * pageNo - 9}</span> to <span className="font-semibold">{Math.min(metaData.totalOrders, 10 * pageNo)}</span> of <span className="font-semibold">{metaData.totalOrders}</span> results
                             </p>
                         </section>
                         <section className="pagination h-12 flex items-center">
-                            <Pagination size={Math.ceil(totalResults/10)} pageNo={pageNo} goToPrevPage={goToPrevPage} changePage={changePage} goToNextPage={goToNextPage} />
+                            <Pagination size={metaData.totalPages} pageNo={pageNo} goToPrevPage={goToPrevPage} changePage={changePage} goToNextPage={goToNextPage} />
                         </section>
                     </div>
 

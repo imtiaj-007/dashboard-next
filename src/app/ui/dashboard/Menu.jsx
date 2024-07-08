@@ -1,9 +1,13 @@
 'use client'
 import { usePathname } from "next/navigation"
 import Link from "next/link"
+import mongoose from "mongoose";
 
 const MenuItem = ({ menu }) => {
-    const pathName = usePathname();
+    let pathName = usePathname();
+    let pathArr = pathName.split('/');
+    if(mongoose.Types.ObjectId.isValid(pathArr.pop()))
+        pathName = pathArr.join('/')
 
     return (
         <Link href={menu.path}>
