@@ -15,7 +15,7 @@ const SingleOrderPage = () => {
     // Fetch Single Order Details
     const fetchSingleProduct = async () => {
         try {
-            const url = baseURL + orderID;
+            const url = baseURL + '/' + orderID;
             const res = await axios.get(url, {
                 headers: {
                     'Content-Type': 'application/json'

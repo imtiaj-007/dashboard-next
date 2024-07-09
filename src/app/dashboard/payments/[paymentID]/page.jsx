@@ -15,7 +15,7 @@ const SinglePaymentPage = () => {
     // Fetch Single Transaction with ID
     const fetchSinglePayment = async () => {
         try {
-            const url = baseURL + paymentID;
+            const url = baseURL + '/' + paymentID;
             const res = await axios.get(url, {
                 headers: {
                     'Content-Type': 'application/json'
