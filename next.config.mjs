@@ -13,6 +13,10 @@ const nextConfig = {
         };
         return config;
       },
+      env: {
+        ORDER_URL: process.env.ORDER_URL, 
+        PAYMENT_URL: process.env.PAYMENT_URL,
+      },
 };
 
 export default nextConfig;

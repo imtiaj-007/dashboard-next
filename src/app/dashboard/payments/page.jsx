@@ -8,20 +8,19 @@ import Pagination from "@/app/ui/dashboard/Pagination"
 import { FiSearch, FiDownload } from "react-icons/fi"
 
 
-const baseURL = 'http://localhost:3000/api/orders'
-
 const PaymentsPage = () => {
-    const [month, setMonth] = useState('This Month');
+    const baseURL = process.env.PAYMENT_URL;
     const [active, setActive] = useState(true);
     const payoutRef = useRef();
     const refundRef = useRef();
     const [pageNo, setPageNo] = useState(1);
-    const [sortValue, setSortvalue] = useState('-createdAt');
+    const [sortValue, setSortvalue] = useState('-transactionDate');
     const [metaData, setMetaData] = useState({});
     const [tableData, setTableData] = useState([]);
     const [cardData, setCardData] = useState([]);
 
 
+    // Fetch Table Data from Backend
     const fetchData = async (url) => {
         try {
             const res = await axios.get(url, {
@@ -29,7 +28,8 @@ const PaymentsPage = () => {
                     'Content-Type': 'application/json'
                 },
             });
-            setTableData(res.data.orders);
+            console.log(res.data.payments)
+            setTableData(res.data.payments);
             setMetaData(res.data.meta);
             setCardData(res.data.meta.card);
         } catch (error) {
@@ -54,11 +54,13 @@ const PaymentsPage = () => {
         }
     }
 
+    // Search Transactions by Order ID
     const searchByOrderId = async (e)=> {
         let url = `${baseURL}?orderID=${e.target.value}`
         fetchData(url);
     }
 
+    // Sort Table Data
     const sortData = async (e)=> {
         e.preventDefault();
         setSortvalue(e.target.value);
@@ -66,29 +68,33 @@ const PaymentsPage = () => {
         fetchData(url);
     }
 
+    // Download Table Data in CSV format
     const downloadTableData = ()=> {
         const fileName = 'transactions';
         const exportType =  exportFromJSON.types.csv;
         exportFromJSON({
             data: tableData,
             fileName,       
-            fields: ['_id', 'userID', 'productName', 'qty', 'price', 'orderStatus', 'paymentMethod', 'createdAt'],
+            fields: ['_id', 'userID', 'orderID', 'amount', 'status', 'paymentMethod', 'transactionDate'],
             exportType
         })
     }
 
+    // Go to Previous Page
     const goToPrevPage = () => {
         setPageNo(prevPageNo => prevPageNo - 1);
         let url = `${baseURL}?page=${pageNo - 1}&sort=${sortValue}`
         fetchData(url);
     }
 
+    // Go to Next Page
     const goToNextPage = () => {
         setPageNo(prevPageNo => prevPageNo + 1);
         let url = `${baseURL}?page=${pageNo + 1}&sort=${sortValue}`
         fetchData(url);
     }
 
+    // Go to Clicked Page No
     const changePage = (e) => {
         e.preventDefault();
         let page = Number(e.target.dataset.pageno);
@@ -105,7 +111,8 @@ const PaymentsPage = () => {
 
     return (
         <section id="home" className="min-h-screen overflow-y-auto">
-
+            
+            {/* Overview Section */}
             <div id="overview" className="flex justify-between para items-center mt-3">
                 <h6 className="heading-6">Overview</h6>
                 <select id="month" className="font-semibold text-sm text-neutral-600 p-2 border border-gray-500 rounded-md">
@@ -115,6 +122,7 @@ const PaymentsPage = () => {
                 </select>
             </div>
 
+            {/* Payment Cards Section */}
             <div id="cards" className="grid grid-cols-3 gap-4 px-8 pb-5">
                 {
                     cardData.map((item, idx) => {
@@ -124,14 +132,16 @@ const PaymentsPage = () => {
                     })
                 }
             </div>
-
+            
+            {/* Table Section */}
             <div id="tableSection" className="para">
-                <h6 className="heading-6 mb-2">Transactions | {month}</h6>
+                <h6 className="heading-6 mb-2">Transactions | This Month</h6>
                 <div className="flex gap-2 mb-4">
                     <button className="bg-[#1f5fae] font-bold text-xs text-white py-2 px-4 rounded-3xl" ref={payoutRef} onClick={toggleTableData} >Payouts (22)</button>
                     <button className="bg-gray-400 font-bold text-xs text-white py-2 px-4 rounded-3xl" ref={refundRef} onClick={toggleTableData} >Refunds (6)</button>
                 </div>
 
+                {/* Table Container */}
                 <div className="table-container bg-white shadow-md rounded-md p-3">
                     <div className="table-header flex justify-between">
                         <div className="w-72 flex justify-center items-center gap-3 bg-white border border-gray-400 px-4 py-1 rounded-lg hover:opacity-80 hover:cursor-pointer ">
@@ -143,17 +153,19 @@ const PaymentsPage = () => {
                             <select id="sort" className="outline outline-1 font-semibold text-sm text-neutral-600 px-2 rounded-sm" onChange={sortData}>
                                 <option value="-createdAt">Date (Latest to Oldest)</option>
                                 <option value="createdAt">Date (Oldest to Latest)</option>
-                                <option value="price">Amount (Low to High)</option>
-                                <option value="-price">Amount (High to Low).</option>
+                                <option value="amount">Amount (Low to High)</option>
+                                <option value="-amount">Amount (High to Low).</option>
                             </select>
                             <button className="outline outline-1 rounded-sm px-2" onClick={downloadTableData}><FiDownload size={16} /></button>
                         </div>
                     </div>
 
+                    {/* Table Body */}
                     <div className="table-body">
                         <Table tableData={tableData} pageNo={pageNo} />
                     </div>
 
+                    {/* Table Footer */}
                     <div className="table-footer flex justify-between items-center text-sm px-8 mt-3">
                         <section className="page-result">
                             <p>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectToDB from "@/app/lib/utils";
-import Order from "@/app/models/orders";
+import Order from "@/app/models/orders"
+import Transaction from "@/app/models/transactions";
 import mongoose from "mongoose";
 
 
@@ -12,15 +13,15 @@ export const GET = async (req, res) => {
         const { searchParams } = new URL(req.url);
         const orderID = searchParams.get('orderID');        
         const page = parseInt(searchParams.get('page')) || 1;
-        const sort = searchParams.get('sort') || '-createdAt';
+        const sort = searchParams.get('sort') || '-transactionDate';
 
         const pageNum = parseInt(page) || 1;        
-        const totalOrders = await Order.countDocuments();
+        const totalOrders = await Transaction.countDocuments();
         const totalPages = Math.ceil(totalOrders / 10);  
         
         const skip = Math.max(0, (pageNum - 1) * 10);
 
-        const orders = await Order.find({})
+        const payments = await Transaction.find({})
             .sort(sort)
             .skip(skip)
             .limit(10)
@@ -71,9 +72,9 @@ export const GET = async (req, res) => {
         ]
 
         if(orderID && mongoose.Types.ObjectId.isValid(orderID)) {
-            let orders = await Order.find({ _id: orderID })
+            let payments = await Transaction.find({ orderID })
             return NextResponse.json({ 
-                orders,
+                payments,
                 meta: {
                     totalOrders,
                     totalPages,
@@ -85,7 +86,7 @@ export const GET = async (req, res) => {
         }
 
         return NextResponse.json({
-            orders,
+            payments,
             meta: {
                 totalOrders,
                 totalPages,
@@ -109,8 +110,8 @@ export const POST = async (req, res) => {
     try {
         await connectToDB();
         const data = await req.json();
-        const orders = await Order.insertMany(data);        
-        return NextResponse.json({ orders });
+        const payments = await Transaction.insertMany(data);        
+        return NextResponse.json({ payments });
     } catch (error) {
         console.log(error);
         return NextResponse.json({

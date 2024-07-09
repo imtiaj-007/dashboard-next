@@ -6,18 +6,20 @@ import { AiFillAmazonCircle, AiFillApple, AiFillChrome } from "react-icons/ai";
 import { BsQrCode } from "react-icons/bs";
 
 const SingleOrderPage = () => {
+    const baseURL = process.env.ORDER_URL;
     const path = usePathname();
     const orderID = path.split('/').pop();
-    const [singleOrder, setSingleOrder] = useState({});
+    const [singleOrder, setSingleOrder] = useState(null);
 
     const fetchSingleProduct = async () => {
         try {
-            const res = await axios.get(`http://localhost:3000/api/orders/${orderID}`, {
+            const url = baseURL + orderID;
+            const res = await axios.get(url, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
-            console.log(res.data.singleOrder)
+            console.log(url, res.data.singleOrder)
             setSingleOrder(res.data.singleOrder)
         } catch (error) {
             console.log(error)
@@ -32,6 +34,7 @@ const SingleOrderPage = () => {
         <section id="singleOrder" className="w-full para">
 
             <h6 className="heading-6 my-3">Order Details (3) </h6>
+            {singleOrder && 
             <div className="font-medium ">
 
                 <div className="order-table text-center ">
@@ -52,7 +55,7 @@ const SingleOrderPage = () => {
                         </li>
                         <li className="col-span-2">{Date.now()}</li>
                         <li className="col-span-1">x{singleOrder.qty}</li>
-                        <li className="col-span-2">{(singleOrder.price * 36.12).toLocaleString('en-IN', {
+                        <li className="col-span-2">{(singleOrder.price).toLocaleString('en-IN', {
                             maximumFractionDigits: 2,
                             style: 'currency',
                             currency: 'INR'
@@ -105,7 +108,7 @@ const SingleOrderPage = () => {
                             <div className="flex justify-between">
 
                                 <p>Subtotal</p>
-                                <p>{(singleOrder.price * 36.12).toLocaleString('en-IN', {
+                                <p>{(singleOrder.price).toLocaleString('en-IN', {
                                     maximumFractionDigits: 2,
                                     style: 'currency',
                                     currency: 'INR'
@@ -138,7 +141,7 @@ const SingleOrderPage = () => {
 
                             <div className="flex justify-between">
                                 <p>Total</p>
-                                <p>{(singleOrder.price * 36.12).toLocaleString('en-IN', {
+                                <p>{(singleOrder.price).toLocaleString('en-IN', {
                                     maximumFractionDigits: 2,
                                     style: 'currency',
                                     currency: 'INR'
@@ -150,7 +153,7 @@ const SingleOrderPage = () => {
                 </div>
 
             </div>
-
+            }
         </section>
     )
 }
