@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 // Handling GET requests
 export const GET = async (req, res) => {
     try {
-        await connectToDB();
+        await connectToDB();    // create connection with mongoDB
 
         const { searchParams } = new URL(req.url);
         const orderID = searchParams.get('orderID');        
@@ -20,7 +20,7 @@ export const GET = async (req, res) => {
         
         const skip = Math.max(0, (pageNum - 1) * 10);
 
-        const orders = await Order.find({})
+        const orders = await Order.find({})     // get orders data from database
             .sort(sort)
             .skip(skip)
             .limit(10)
@@ -70,6 +70,7 @@ export const GET = async (req, res) => {
             }
         ]
 
+        // If user searched for order with particular ID
         if(orderID && mongoose.Types.ObjectId.isValid(orderID)) {
             let orders = await Order.find({ _id: orderID })
             return NextResponse.json({ 
@@ -84,6 +85,7 @@ export const GET = async (req, res) => {
             });
         }
 
+        // Send orders data with metadata
         return NextResponse.json({
             orders,
             meta: {

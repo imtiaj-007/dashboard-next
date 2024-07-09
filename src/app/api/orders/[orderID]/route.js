@@ -3,7 +3,7 @@ import connectToDB from "@/app/lib/utils";
 import Order from "@/app/models/orders";
 
 
-// Handling GET requests
+// Handling GET requests for single orders
 export const GET = async (req, res) => {
     try {
         await connectToDB();

@@ -1,5 +1,6 @@
 'use client'
 import axios from "axios"
+import Image from "next/image"
 import { useRef, useState, useEffect } from "react"
 import exportFromJSON from 'export-from-json'
 import Cards from "@/app/ui/dashboard/Cards"
@@ -15,14 +16,20 @@ const PaymentsPage = () => {
     const refundRef = useRef();
     const [pageNo, setPageNo] = useState(1);
     const [sortValue, setSortvalue] = useState('-transactionDate');
-    const [metaData, setMetaData] = useState({});
     const [tableData, setTableData] = useState([]);
-    const [cardData, setCardData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [metaData, setMetaData] = useState({});
+    const [cardData, setCardData] = useState([
+        { heading: 'Next Payout', amount: 1000.6, quantity: 3 },
+        { heading: 'Amount Pending', amount: 20314.7, quantity: 6 },
+        { heading: 'Amount Recieved', amount: 102456.2, quantity: 22 }
+    ]);
 
 
     // Fetch Table Data from Backend
     const fetchData = async (url) => {
         try {
+            setLoading(true);
             const res = await axios.get(url, {
                 headers: {
                     'Content-Type': 'application/json'
@@ -34,6 +41,8 @@ const PaymentsPage = () => {
             setCardData(res.data.meta.card);
         } catch (error) {
             console.log(error)
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -149,10 +158,12 @@ const PaymentsPage = () => {
                             <input type="text" name="global-search" id="globalSearch" className=" w-full outline-none font-medium text-sm bg-white text-stone-700" placeholder="Search by order ID" onChange={searchByOrderId} />
                         </div>
                         <div className="options flex gap-2">
-                            
+                            {loading &&
+                                <Image src={'/spinner.gif'} width={30} height={30} alt="loading-animation" />
+                            }
                             <select id="sort" className="outline outline-1 font-semibold text-sm text-neutral-600 px-2 rounded-sm" onChange={sortData}>
-                                <option value="-createdAt">Date (Latest to Oldest)</option>
-                                <option value="createdAt">Date (Oldest to Latest)</option>
+                                <option value="-transactionDate">Date (Latest to Oldest)</option>
+                                <option value="transactionDate">Date (Oldest to Latest)</option>
                                 <option value="amount">Amount (Low to High)</option>
                                 <option value="-amount">Amount (High to Low).</option>
                             </select>
@@ -162,7 +173,7 @@ const PaymentsPage = () => {
 
                     {/* Table Body */}
                     <div className="table-body">
-                        <Table tableData={tableData} pageNo={pageNo} />
+                        <Table tableData={tableData} pageNo={pageNo} type={'payments'} />
                     </div>
 
                     {/* Table Footer */}

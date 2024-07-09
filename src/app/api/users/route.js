@@ -3,7 +3,7 @@ import connectToDB from "@/app/lib/utils";
 import User from "@/app/models/users";
 
 
-// Handling GET requests
+// Handling GET requests for users
 export const GET = async(req, res)=> {
     try {
         await connectToDB();
@@ -18,7 +18,7 @@ export const GET = async(req, res)=> {
     }
 }
 
-// Handling POST requests
+// Handling POST requests for users
 export const POST = async(req, res)=> {
     try {
         await connectToDB();

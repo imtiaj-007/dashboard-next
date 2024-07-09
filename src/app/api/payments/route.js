@@ -5,10 +5,10 @@ import Transaction from "@/app/models/transactions";
 import mongoose from "mongoose";
 
 
-// Handling GET requests
+// Handling GET requests for all transactions
 export const GET = async (req, res) => {
     try {
-        await connectToDB();
+        await connectToDB();        // connect to mongoDB
 
         const { searchParams } = new URL(req.url);
         const orderID = searchParams.get('orderID');        
@@ -21,7 +21,7 @@ export const GET = async (req, res) => {
         
         const skip = Math.max(0, (pageNum - 1) * 10);
 
-        const payments = await Transaction.find({})
+        const payments = await Transaction.find({})     // get payments data from database
             .sort(sort)
             .skip(skip)
             .limit(10)
@@ -71,6 +71,7 @@ export const GET = async (req, res) => {
             }
         ]
 
+        // If user searched for transactions with particular orderID
         if(orderID && mongoose.Types.ObjectId.isValid(orderID)) {
             let payments = await Transaction.find({ orderID })
             return NextResponse.json({ 
@@ -85,6 +86,7 @@ export const GET = async (req, res) => {
             });
         }
 
+        // send payments data with metadata
         return NextResponse.json({
             payments,
             meta: {

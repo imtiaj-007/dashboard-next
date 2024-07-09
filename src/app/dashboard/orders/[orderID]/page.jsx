@@ -11,6 +11,8 @@ const SingleOrderPage = () => {
     const orderID = path.split('/').pop();
     const [singleOrder, setSingleOrder] = useState(null);
 
+
+    // Fetch Single Order Details
     const fetchSingleProduct = async () => {
         try {
             const url = baseURL + orderID;
@@ -34,9 +36,11 @@ const SingleOrderPage = () => {
         <section id="singleOrder" className="w-full para">
 
             <h6 className="heading-6 my-3">Order Details (3) </h6>
+            
             {singleOrder && 
             <div className="font-medium ">
 
+                {/* Order Table Heading */}
                 <div className="order-table text-center ">
                     <ul className="grid grid-cols-8 items-center text-md text-white bg-indigo-500 rounded-t-md py-5">
                         <li className="col-span-3">Product Name</li>
@@ -45,6 +49,7 @@ const SingleOrderPage = () => {
                         <li className="col-span-2">Price</li>
                     </ul>
 
+                    {/* Order Items */}
                     <ul className="grid grid-cols-8 items-center text-sm bg-white rounded-sm py-5 border-b-2">
                         <li className="col-span-3 flex gap-2 items-center justify-center">
                             <AiFillAmazonCircle size={44} />
@@ -96,7 +101,8 @@ const SingleOrderPage = () => {
                         })}</li>
                     </ul>
                 </div>
-
+                
+                {/* Price Summary */}
                 <div className="order-summary grid grid-cols-2 bg-white rounded-md mt-1">
                     <div className="flex flex-col items-center text-xs px-12 py-8">
                         <BsQrCode size={110} />

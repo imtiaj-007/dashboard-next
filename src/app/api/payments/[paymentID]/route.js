@@ -3,7 +3,7 @@ import connectToDB from "@/app/lib/utils";
 import Transaction from "@/app/models/transactions";
 
 
-// Handling GET requests
+// Handling GET requests for single payment
 export const GET = async (req, res) => {
     try {
         await connectToDB();

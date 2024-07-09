@@ -9,10 +9,14 @@ const SinglePaymentPage = () => {
     const path = usePathname();
     const paymentID = path.split('/').pop();
     const [singlePayment, setSinglePayment] = useState(null);
+    const baseURL = process.env.PAYMENT_URL;
 
+
+    // Fetch Single Transaction with ID
     const fetchSinglePayment = async () => {
         try {
-            const res = await axios.get(`http://localhost:3000/api/payments/${paymentID}`, {
+            const url = baseURL + paymentID;
+            const res = await axios.get(url, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
