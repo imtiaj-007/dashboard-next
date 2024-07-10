@@ -5,6 +5,7 @@ import MenuItem from "./Menu";
 import { 
     IoIosArrowDropdown,
     IoMdListBox,
+    IoMdCloseCircleOutline
 } from "react-icons/io";
 
 import { 
@@ -91,22 +92,23 @@ const menuItems = [
 ]
 
 
-const Sidebar = () => {
+const Sidebar = ({ hideSideBar }) => {
 
     return (
-        <section id="sidebar" className="w-full h-full">
-            <div id="head-section" className="w-full flex gap-3 justify-between items-center px-5 pt-5 pb-4 bg-gray-900 ">
+        <section id="sidebar" className="w-full h-full flex flex-col items-center text-xl lg:text-base ">
+            <div id="head-section" className="w-full flex gap-5 lg:gap-3 lg:justify-between items-center px-5 pt-5 pb-4 bg-gray-900 ">
                 <div className="flex gap-3 items-center ">
                     <Image src={'/user.png'} width={44} height={40} className="bg-white p-1 rounded-md" alt="icons" />
                     <div className="text-white">
                         <p className="font-medium ">Nishyan</p>
-                        <Link href={'/dashboard'} ><p className="font-light text-sm underline underline-offset-1">Visit Store</p></Link>
+                        <Link href={'/dashboard'} ><p className="font-base underline underline-offset-1">Visit Store</p></Link>
                     </div>
                 </div>                
                 <IoIosArrowDropdown size={20} color="white" />        
+                <IoMdCloseCircleOutline size={30} color="white" className="absolute right-8 lg:hidden" onClick={hideSideBar} />
             </div>
 
-            <div id="menus" className="flex flex-col mt-3 px-2">
+            <div id="menus" className="w-full flex flex-col text-xl lg:text-base mt-3 px-2">
                 {
                     menuItems.map((item)=> {
                         return (
@@ -116,10 +118,10 @@ const Sidebar = () => {
                 }
             </div>
 
-            <div id="wallet" className="fixed bottom-0 w-1/6 p-2  ">
+            <div id="wallet" className="fixed bottom-0 w-full p-2  ">
                 <div className="flex gap-3 items-center rounded-md px-4 py-2 bg-gray-700">
                     <FaWallet size={24} color="white"/>
-                    <div className="font-medium text-sm text-white">
+                    <div className="font-medium text-lg lg:text-sm text-white">
                         <p>Available Credits</p>
                         <p className="font-semibold ">222.10</p>
                     </div>   

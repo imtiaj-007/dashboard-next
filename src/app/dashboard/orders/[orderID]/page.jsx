@@ -33,7 +33,7 @@ const SingleOrderPage = () => {
     }, [])
 
     return (
-        <section id="singleOrder" className="w-full para">
+        <section id="singleOrder" className="w-full para-base lg:para-lg">
 
             <h6 className="heading-6 my-3">Order Details (3) </h6>
             
@@ -52,7 +52,7 @@ const SingleOrderPage = () => {
                     {/* Order Items */}
                     <ul className="grid grid-cols-8 items-center text-sm bg-white rounded-sm py-5 border-b-2">
                         <li className="col-span-3 flex gap-2 items-center justify-center">
-                            <AiFillAmazonCircle size={44} />
+                            <AiFillAmazonCircle size={44} className="hidden md:block" />
                             <div className="flex flex-col gap-1 items-start">
                                 <p>{singleOrder.productName}</p>
                                 <p className="text-xs">Color: Black</p>
@@ -69,7 +69,7 @@ const SingleOrderPage = () => {
 
                     <ul className="grid grid-cols-8 items-center text-sm bg-white rounded-sm py-5 border-b-2">
                         <li className="col-span-3 flex gap-2 items-center justify-center">
-                            <AiFillApple size={44} />
+                            <AiFillApple size={44} className="hidden md:block" />
                             <div className="flex flex-col gap-1 items-start">
                                 <p>Extra Product 1</p>
                                 <p className="text-xs">Color: Red</p>
@@ -86,7 +86,7 @@ const SingleOrderPage = () => {
 
                     <ul className="grid grid-cols-8 items-center text-sm shadow-sm bg-white rounded-sm py-5">
                         <li className="col-span-3 flex gap-2 items-center justify-center">
-                            <AiFillChrome size={44} />
+                            <AiFillChrome size={44} className="hidden md:block" />
                             <div className="flex flex-col gap-1 items-start">
                                 <p>Extra Product 2</p>
                                 <p className="text-xs">Color: Blue</p>
@@ -103,14 +103,14 @@ const SingleOrderPage = () => {
                 </div>
                 
                 {/* Price Summary */}
-                <div className="order-summary grid grid-cols-2 bg-white rounded-md mt-1">
+                <div className="flex flex-col-reverse md:grid md:grid-cols-2 bg-white rounded-md mt-1">
                     <div className="flex flex-col items-center text-xs px-12 py-8">
                         <BsQrCode size={110} />
                         <p className="mt-2">#{orderID}</p>
                     </div>
-                    <div className="flex px-12 py-8">
-                        <p className="w-1/2 font-semibold text-md">Order Summary</p>
-                        <div className="w-1/2 flex flex-col gap-2 text-sm text-gray-700">
+                    <div className="flex gap-2 px-8 md:px-12 py-8">
+                        <p className="w-1/3 md:w-1/2 font-semibold text-md">Order Summary</p>
+                        <div className="w-2/3 md:w-1/2 flex flex-col gap-2 text-sm text-gray-700">
                             <div className="flex justify-between">
 
                                 <p>Subtotal</p>

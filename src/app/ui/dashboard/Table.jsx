@@ -9,7 +9,7 @@ const checkObj = {
 const Table = ({ pageNo, tableData, type }) => {
 
     return (
-        <table className="w-full text-sm mt-4">
+        <table className="lg:w-full text-sm mt-4 text-nowrap">
             <thead className="font-semibold bg-gray-200 ">
                 <tr className="h-10">
                     <th>SL No.</th>

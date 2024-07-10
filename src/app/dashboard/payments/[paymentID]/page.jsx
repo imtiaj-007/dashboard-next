@@ -34,13 +34,13 @@ const SinglePaymentPage = () => {
 
 
     return (
-        <section id="singleOrder" className="w-full para">
+        <section id="singleOrder" className="w-full para-base lg:para-lg">
 
             <h6 className="heading-6 my-3">Transactions Details</h6>
 
             {singlePayment &&
-                <div className="container w-full flex justify-center items-center p-10">
-                    <div className="w-1/2 bg-white rounded-md p-5">
+                <div className="w-full flex justify-center items-center py-10 md:p-10">
+                    <div className="w/full lg:w-1/2 bg-white rounded-md p-5">
                         {/* Transaction ID */}
                         <p className="font-semibold text-sm mb-8">Transaction ID: #{singlePayment?._id}</p>
 
@@ -72,8 +72,8 @@ const SinglePaymentPage = () => {
                         {/* Transaction Details */}
                         <p className="font-semibold text-sm text-center bg-gray-200/90 text-stone-900 rounded-lg p-2 mb-3" >Payment Information</p>
                         <div className="font-medium text-sm text-gray-800 ring-1 ring-slate-300 rounded-lg ">
-                            <div className="grid grid-cols-8 p-4">
-                                <div className="col-start-2 col-span-2 flex flex-col gap-1">
+                            <div className="grid grid-cols-6 md:grid-cols-8 p-4">
+                                <div className="col-start-1 md:col-start-2 col-span-2 flex flex-col gap-1">
                                     <p>User ID</p>
                                     <p>OrderID</p>
                                     <p>Method</p>

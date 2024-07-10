@@ -119,10 +119,10 @@ const PaymentsPage = () => {
 
 
     return (
-        <section id="home" className="min-h-screen overflow-y-auto">
+        <section id="payments" className="min-h-screen overflow-y-auto">
             
             {/* Overview Section */}
-            <div id="overview" className="flex justify-between para items-center mt-3">
+            <div id="overview" className="flex justify-between para-base lg:para-lg items-center mt-3">
                 <h6 className="heading-6">Overview</h6>
                 <select id="month" className="font-semibold text-sm text-neutral-600 p-2 border border-gray-500 rounded-md">
                     <option value="current">This Month</option>
@@ -132,7 +132,7 @@ const PaymentsPage = () => {
             </div>
 
             {/* Payment Cards Section */}
-            <div id="cards" className="grid grid-cols-3 gap-4 px-8 pb-5">
+            <div id="cards" className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 px-5 lg:px-8 pb-5">
                 {
                     cardData.map((item, idx) => {
                         return (
@@ -143,7 +143,7 @@ const PaymentsPage = () => {
             </div>
             
             {/* Table Section */}
-            <div id="tableSection" className="para">
+            <div id="tableSection" className="para-base lg:para-lg">
                 <h6 className="heading-6 mb-2">Transactions | This Month</h6>
                 <div className="flex gap-2 mb-4">
                     <button className="bg-[#1f5fae] font-bold text-xs text-white py-2 px-4 rounded-3xl" ref={payoutRef} onClick={toggleTableData} >Payouts (22)</button>
@@ -151,9 +151,9 @@ const PaymentsPage = () => {
                 </div>
 
                 {/* Table Container */}
-                <div className="table-container bg-white shadow-md rounded-md p-3">
-                    <div className="table-header flex justify-between">
-                        <div className="w-72 flex justify-center items-center gap-3 bg-white border border-gray-400 px-4 py-1 rounded-lg hover:opacity-80 hover:cursor-pointer ">
+                <div className="bg-white shadow-md rounded-md p-3">
+                    <div className="table-header flex flex-col gap-3 items-center justify-between md:flex-row ">
+                        <div className="w-full md:w-72 flex justify-center items-center gap-3 bg-white border border-gray-400 px-4 py-1 rounded-lg hover:opacity-80 hover:cursor-pointer ">
                             <FiSearch size={20} />
                             <input type="text" name="global-search" id="globalSearch" className=" w-full outline-none font-medium text-sm bg-white text-stone-700" placeholder="Search by order ID" onChange={searchByOrderId} />
                         </div>
@@ -161,7 +161,7 @@ const PaymentsPage = () => {
                             {loading &&
                                 <Image src={'/spinner.gif'} width={30} height={30} alt="loading-animation" />
                             }
-                            <select id="sort" className="outline outline-1 font-semibold text-sm text-neutral-600 px-2 rounded-sm" onChange={sortData}>
+                            <select id="sort" className="outline outline-1 font-semibold text-sm text-neutral-600 px-2 py-1 rounded-sm" onChange={sortData}>
                                 <option value="-transactionDate">Date (Latest to Oldest)</option>
                                 <option value="transactionDate">Date (Oldest to Latest)</option>
                                 <option value="amount">Amount (Low to High)</option>
@@ -172,18 +172,19 @@ const PaymentsPage = () => {
                     </div>
 
                     {/* Table Body */}
-                    <div className="table-body">
+                    <div className="overflow-x-auto">
                         <Table tableData={tableData} pageNo={pageNo} type={'payments'} />
                     </div>
 
                     {/* Table Footer */}
-                    <div className="table-footer flex justify-between items-center text-sm px-8 mt-3">
+                    <div className="flex flex-col-reverse gap-2 lg:flex-row lg:justify-between items-center text-sm px-8 mt-3">
                         <section className="page-result">
                             <p>
                                 Showing <span className="font-semibold">{10 * pageNo - 9}</span> to <span className="font-semibold">{Math.min(metaData.totalOrders, 10 * pageNo)}</span> of <span className="font-semibold">{metaData.totalOrders}</span> results
                             </p>
                         </section>
-                        <section className="pagination h-12 flex items-center">
+                        {/* Pagination */}
+                        <section className="h-12 flex items-center">
                             <Pagination size={metaData.totalPages} pageNo={pageNo} goToPrevPage={goToPrevPage} changePage={changePage} goToNextPage={goToNextPage} />
                         </section>
                     </div>

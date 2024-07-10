@@ -4,6 +4,7 @@
 
 /* width */
 ::-webkit-scrollbar {
+    height: 2px;
     width: 6px;
 }
  
@@ -26,15 +27,26 @@
 @layer base {
     html,
     body {
-        margin: none;
+        margin: 0;
         overflow-x: hidden;
         scroll-behavior: smooth;
     }
-    .para {
+    td,
+    th {
+        @apply px-4;
+    }
+    .bg-gradient {
+        background-color: #FFDEE9;
+        background-image: linear-gradient(225deg, #FFDEE9 0%, #B5FFFC 100%);        
+    }
+    .para-lg {
         @apply px-8 py-4;
     }
+    .para-base {
+        @apply px-4 py-4;
+    }
     .btn {
-        @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;
+        @apply bg-indigo-600/90 hover:bg-indigo-700 text-white font-bold text-base lg:text-sm py-2 px-4 rounded;
     }
     .font-small {
         @apply font-light text-xs;
